@@ -22,4 +22,9 @@ public final class Constants {
     public static final int RIGHT_LEADER_ID = 2;
     public static final int RIGHT_FOLLOWER_ID = 3;
   }
+  public static class FuelConstants {
+    public static final int INTAKE_LAUNCHER_ID = 4;
+    public static final int FEEDER_ROLLER_ID = 5;
+    
+  } 
 }
