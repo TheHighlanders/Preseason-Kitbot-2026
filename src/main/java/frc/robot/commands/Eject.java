@@ -1,0 +1,54 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package frc.robot.commands;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.FuelSubsystem;
+
+/* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
+public class Eject extends Command {
+  /** Creates a new Eject. */
+
+  FuelSubsystem fuelSubsystem;
+
+  public Eject(FuelSubsystem fuelSystem) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(fuelSystem);
+    this.fuelSubsystem = fuelSystem;
+  }
+
+  // Called when the command is initially scheduled.
+  // Set the rollers to the proper values for ejecting
+  @Override
+  public void initialize() {
+    fuelSubsystem
+      .setIntakeLauncherRoller(
+        -1 * SmartDashboard.getNumber("Intaking intake roller value", 0)
+      );
+    fuelSubsystem
+      .setFeederRoller(
+        -1 * SmartDashboard.getNumber("Intaking feeder roller value", 0)
+      );
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {}
+
+  // Called once the command ends or is interrupted.
+  // Stop the rollers
+  @Override
+  public void end(boolean interrupted) {
+    fuelSubsystem.setIntakeLauncherRoller(0);
+    fuelSubsystem.setFeederRoller(0);
+  }
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return false;
+  }
+}

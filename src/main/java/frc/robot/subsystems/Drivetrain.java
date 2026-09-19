@@ -4,10 +4,13 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.DoubleSupplier;
+
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
@@ -42,6 +45,12 @@ public class Drivetrain extends SubsystemBase {
   // arcade drive method
   public void driveArcade(double xSpeed, double zRotation) {
     drive.arcadeDrive(xSpeed, zRotation);
+  }
+
+  public Command driveArcade(DoubleSupplier xSpeed, DoubleSupplier zRotation) {
+    return this.run(
+      () -> drive.arcadeDrive(xSpeed.getAsDouble(), zRotation.getAsDouble())
+    );
   }
 
   
