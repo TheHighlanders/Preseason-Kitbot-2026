@@ -7,38 +7,40 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.FuelSubsystem;
+import static frc.robot.Constants.FuelConstants.*;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class Intake extends Command {
   /** Creates a new Intake. */
+
   FuelSubsystem fuelSubsystem;
 
   public Intake(FuelSubsystem fuelSystem) {
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(fuelSystem);
     this.fuelSubsystem = fuelSystem;
   }
 
-  // Called when the command is initially scheduled.
+  // Called when the command is initially scheduled. Set the rollers to the
+  // appropriate values for intaking
   @Override
   public void initialize() {
     fuelSubsystem
-      .setIntakeLauncherRoller(
-        SmartDashboard.getNumber("Intaking intake roller value", 0)
-      );
-    fuelSubsystem
-      .setFeederRoller(
-        SmartDashboard.getNumber("Intaking feeder roller value", 0)
-      );
+        .setIntakeLauncherRoller(SmartDashboard.getNumber("Intaking intake roller value", INTAKING_INTAKE_VOLTAGE));
+    fuelSubsystem.setFeederRoller(SmartDashboard.getNumber("Intaking feeder roller value", INTAKING_FEEDER_VOLTAGE));
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
+  // Called every time the scheduler runs while the command is scheduled. This
+  // command doesn't require updating any values while running
   @Override
-  public void execute() {}
+  public void execute() {
+  }
 
-  // Called once the command ends or is interrupted.
+  // Called once the command ends or is interrupted. Stop the rollers
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    fuelSubsystem.setIntakeLauncherRoller(0);
+    fuelSubsystem.setFeederRoller(0);
+  }
 
   // Returns true when the command should end.
   @Override
