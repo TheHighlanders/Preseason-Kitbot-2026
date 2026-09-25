@@ -18,33 +18,22 @@ public class intake extends SubsystemBase {
                 private static final double LAUNCHING_LAUNCHER_VOLTAGE = 0;
                                 private static final double SPIN_UP_FEEDER_VOLTAGE = 0;
                                   /** Creates a new intake. */
-                                  public final SparkMax leftLeader;
-                                  public final SparkMax leftFollower;
-                                  public final SparkMax rightLeader;
-                                  public final SparkMax rightFollower;
-                                
+                                  public final SparkMax intakeLauncherRoller;
+                                  public final SparkMax feederRoller;
+                                  
                                   private final DifferentialDrive drive; 
                                   /**Class to drive the robot over CAN */
                                   public intake() {
                                     // create brushed motors for drive
-                                    leftLeader = new SparkMax(DriveConstants.LEFT_LEADER_ID, MotorType.kBrushed);
-                                    leftFollower = new SparkMax(DriveConstants.LEFT_FOLLOWER_ID, MotorType.kBrushed);
-                                    rightLeader = new SparkMax(DriveConstants.RIGHT_LEADER_ID, MotorType.kBrushed);
-                                    rightFollower = new SparkMax(DriveConstants.RIGHT_FOLLOWER_ID, MotorType.kBrushed);
+                                    intakeLauncherRoller = new SparkMax(6, MotorType.kBrushed);
+                                    feederRoller= new SparkMax(5, MotorType.kBrushed);
                                     SmartDashboard.putNumber("Intaking feeder roller value", INTAKING_FEEDER_VOLTAGE);
                                     SmartDashboard.putNumber("Intaking intake roller value", INTAKING_INTAKE_VOLTAGE);
                                     SmartDashboard.putNumber("launching feeder roller value", LAUNCHING_FEEDER_VOLTAGE);
                                     SmartDashboard.putNumber("launching launcher roller value", LAUNCHING_LAUNCHER_VOLTAGE);
                                     SmartDashboard.putNumber("spin-up feeder roller value", SPIN_UP_FEEDER_VOLTAGE);
-
-    // set up differential drive class
-    drive = new DifferentialDrive(leftLeader, rightLeader);
     
   } 
-  public void driveArcade(double xSpeed, double zRotation) {
-      drive.arcadeDrive(xSpeed, zRotation);
-  }
-
   public void setIntakeLauncherRoller(double voltage) {
     intakeLauncherRoller.setVoltage(voltage);
   }
@@ -53,6 +42,7 @@ public class intake extends SubsystemBase {
   }
   public void stop() {
     feederRoller.set(0);
+    intakeLauncherRoller.set(0);
     
   }
   @Override
