@@ -12,11 +12,29 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import static frc.robot.Constants.DriveConstants.*;
+import static frc.robot.Constants.DriveConstants;
 
 public class Drivetrain extends SubsystemBase {
-  /** Creates a new MalixyysCode. */
-  public Drivetrain() {}
+  private final SparkMax leftLeader;
+  private final SparkMax leftFollower;
+  private final SparkMax rightLeader;
+  private final SparkMax rightFollower; 
+  private final DifferentialDrive drive;
+  
+  public Drivetrain() {
+    leftLeader = new SparkMax(DriveConstants.LEFT_LEADER_ID, MotorType.kBrushed);
+    leftFollower = new SparkMax(DriveConstants.LEFT_FOLLOW_ID, MotorType.kBrushed);
+    rightLeader = new SparkMax(DriveConstants.RIGHT_LEADER_ID, MotorType.kBrushed);
+    rightFollower = new SparkMax(DriveConstants.RIGHT_FOLLOW_ID, MotorType.kBrushed);
+ 
+    drive = new DifferentialDrive(leftLeader, rightLeader);
+    
+  }
+
+  public void driveArcade(double xSpeed, double zRotation) {
+    drive.arcadeDrive(xSpeed, zRotation);
+  }
+
 
   @Override
   public void periodic() {
