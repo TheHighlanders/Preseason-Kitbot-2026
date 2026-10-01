@@ -13,26 +13,40 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import static frc.robot.Constants.DriveConstants.*;
 
 
 public class shooter extends SubsystemBase {
-  private final SparkMax liftLeader;
-  private final SparkMax leftFollower;
-  private final SparkMax rightLeader;
-  private final SparkMax rightFollower;
+  private final SparkMax shooter_moter;
+
+  private final DifferentialDrive drive;
 
   /** Creates a new shooter. */
   public shooter() {
     // crate brushed motors for dirve
-    liftLeader = new SparkMax(DriveConstants.LFT_LEADER_ID, MotorType.kBrushed);
-    leftFollower = new SparkMax(DriveConstants.LEFT_FOLLOWER_ID, MotorType.kBrushed);
-    rightLeader = new SparkMax(DriveConstants.RIGHT_LEADER_ID, MotorType.kBrushed);
-    rightFollower = new SparkMax(DriveConstants.RIGHT_FOLLOWER_ID, MotorType.kBrushed);
+    shooter_moter = new SparkMax(shooterConstants.ID, MotorType.kBrushed);
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-  }
+    // This method will be called once per scheduler run\
+    drive.arcadeDrive(xSpeed, zRotation);
+}
+
+SmartDashboard.putNumber(key:"Intaking feeder roller value", INTAKINGFEEDER_VOLTAGE)
+SmartDashboard.putNumber(key:"Intaking intake roller value", INTAKING_FEEDER_VOLTAGE)
+SmartDashboard.putNumber(key:"Launching feeder roller value", LAUNCHING_FEEDER_VOLTAGE)
+SmartDashboard.putNumber(key:"Launching launcher roller value", LAUNCHING_LAUNCHER_VOLTAGE)
+SmartDashboard.putNumber(key:"Spin-up feeder roller value", SPIN_UP_FEEDER_VOLTAGE)
+
+public void setIntakeLauncherRoller(double value){
+  intakeLauncherRoller.setVoltage(voltage);
+}
+
+public void setFeederRoller(double value){
+  feederRoller.setVoltage(voltage);
+}
+
+public void stop(){
+  feederRoller.set(0);
+  intakeLauncherRoller.set(0);
 }
