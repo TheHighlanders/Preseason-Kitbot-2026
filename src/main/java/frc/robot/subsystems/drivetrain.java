@@ -4,11 +4,13 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class drivetrain extends SubsystemBase {
   /** Creates a new drivetrain. */
@@ -20,26 +22,22 @@ public class drivetrain extends SubsystemBase {
   private final DifferentialDrive drive;
   
   public drivetrain() {
-  leftLeader = new SparkMax(drive.Constants.LEFT_LEADER_ID, MotarType.kbrushed);
-  leftFollower = new SparkMax(drive.Constants.LEFT_FOLLOWER_ID, MotarType.kbrushed);
-  rightLeader = new SparkMax(drive.Constants.RIGHT_LEADER_ID, MotarType.kbrushed);
-  rightFollower = new SparkMax(drive.Constants.RIGHT_FOLLOWER_ID, MotarType.kbrushed);
+  leftLeader = new SparkMax(Constants.DriveConstants.LEFT_LEADER_ID, MotorType.kBrushed);
+  leftFollower = new SparkMax(Constants.DriveConstants.LEFT_FOLLOWER_ID, MotorType.kBrushed);
+  rightLeader = new SparkMax(Constants.DriveConstants.RIGHT_LEADER_ID, MotorType.kBrushed);
+  rightFollower = new SparkMax(Constants.DriveConstants.RIGHT_FOLLOWER_ID, MotorType.kBrushed);
+
 
 
   drive = new DifferentialDrive(leftLeader, rightLeader);
-
+  }
   public void driveArcade(double xSpeed, double zRotation) {
     drive.arcadeDrive(xSpeed,zRotation );
-
-    SmartDashboard.putNumber(Key:"Intaking feeder role value", INTAKING_FEEDER_VOLTAGE);
-    SmartDashboard.putNumber(Key:"Intaking intake roller value", INTAKING_INTAKE_VOLTAGE);
-    SmartDashboard.putNumber(Key:"Launching feeder roller vlaue", LAUNCHING_FEEDER_VOLTAGE);
-    SmartDashboard.putNumber(Key:"Launching launcher roller value", LAUNCHING_LAUNCHER_VOLTAGE);
-    SmartDashboard.putNumber(Key:"Spin-up feeder roller value", SPIN_UP_FEEDER_VOLTAGE);
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    
   }
 }
+
