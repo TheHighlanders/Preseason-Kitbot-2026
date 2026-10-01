@@ -22,6 +22,7 @@ public class drivetrain extends SubsystemBase {
   private final SparkMax rightFollower;
 
   private final DifferentialDrive drive;
+
   /** Creates a new drivetrain. */
   public drivetrain() {
 
@@ -33,7 +34,10 @@ public class drivetrain extends SubsystemBase {
 
   drive = new DifferentialDrive(leftLeader, rightLeader);
 
-  }
+   }
+    public void driveArcade(double xSpeed, double zRotation) {
+  drive.arcadeDrive(xSpeed, zRotation);
+ }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
