@@ -31,7 +31,7 @@ public class Drive extends Command {
   // Y axis is inverted
   @Override
   public void execute() {
-    drivetrain.driveArcade(-controller.getLeftY(), -controller.getRightX());
+    drivetrain.driveArcade(controller.getLeftY(), -controller.getRightX());
   }
 
   // Called once the command ends or is interrupted.

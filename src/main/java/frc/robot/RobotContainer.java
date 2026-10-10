@@ -5,15 +5,20 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+
+import static frc.robot.Constants.FuelConstants.SPIN_UP_FEEDER_VOLTAGE;
 import static frc.robot.Constants.OperatorConstants.*;
 import frc.robot.commands.Drive;
 import frc.robot.commands.Eject;
 import frc.robot.commands.ExampleAuto;
 import frc.robot.commands.Intake;
+import frc.robot.commands.Launch;
 import frc.robot.commands.LaunchSequence;
+import frc.robot.commands.SpinUp;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.FuelSubsystem;
 
@@ -50,6 +55,8 @@ public class RobotContainer {
     // add additional auto modes you can add additional lines here with
     // autoChooser.addOption
     autoChooser.setDefaultOption("Autonomous", new ExampleAuto(driveSubsystem, fuelSubsystem));
+
+    SmartDashboard.putNumber("Launching spin-up feeder value", SPIN_UP_FEEDER_VOLTAGE*0.75);
   }
 
   /**
@@ -65,14 +72,21 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
+
     // While the left bumper on operator controller is held, intake Fuel
-    operatorController.leftBumper().whileTrue(new Intake(fuelSubsystem));
+    operatorController.leftBumper()
+      .or(driverController.leftBumper())
+      .whileTrue(new Intake(fuelSubsystem));
     // While the right bumper on the operator controller is held, spin up for 1
     // second, then launch fuel. When the button is released, stop.
-    operatorController.rightBumper().whileTrue(new LaunchSequence(fuelSubsystem));
+   driverController.rightBumper()
+   .or(operatorController.rightBumper())
+   .whileTrue(new Launch(fuelSubsystem));
     // While the A button is held on the operator controller, eject fuel back out
     // the intake
-    operatorController.a().whileTrue(new Eject(fuelSubsystem));
+    driverController.a()
+    .or(operatorController.a())
+    .whileTrue(new Eject(fuelSubsystem));
 
     // Set the default command for the drive subsystem to the command provided by
     // factory with the values provided by the joystick axes on the driver
