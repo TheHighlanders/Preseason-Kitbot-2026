@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import static frc.robot.Constants.FuelConstants.SPIN_UP_FEEDER_VOLTAGE;
 import static frc.robot.Constants.OperatorConstants.*;
+
+import frc.robot.commands.AutoDrive;
 import frc.robot.commands.Drive;
 import frc.robot.commands.Eject;
 import frc.robot.commands.ExampleAuto;
@@ -54,7 +56,10 @@ public class RobotContainer {
     // Set the options to show up in the Dashboard for selecting auto modes. If you
     // add additional auto modes you can add additional lines here with
     // autoChooser.addOption
-    autoChooser.setDefaultOption("Autonomous", new ExampleAuto(driveSubsystem, fuelSubsystem));
+    autoChooser.setDefaultOption("Drive back + shoot", new ExampleAuto(driveSubsystem, fuelSubsystem));
+    autoChooser.addOption("do noting", new AutoDrive(driveSubsystem ,0,0));
+    // SmartDashboard.putData(autoChooser);
+    SmartDashboard.putData("AUTO_CHOOSER", autoChooser);
 
     SmartDashboard.putNumber("Launching spin-up feeder value", SPIN_UP_FEEDER_VOLTAGE*0.75);
   }
