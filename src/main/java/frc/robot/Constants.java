@@ -58,4 +58,14 @@ public final class Constants {
     public static final double DRIVE_SCALING = .7;
     public static final double ROTATION_SCALING = .8;
   }
+
+  public static final class PIDConstants {
+    public static final double FEEDER_KP = 0;
+    public static final double FEEDER_KI = 0;
+    public static final double FEEDER_KD = 0;
+    public static final double SHOOTER_KP = 0;
+    public static final double SHOOTER_KI = 0;
+    public static final double SHOOTER_KD = 0;
+    
+  }
 }
