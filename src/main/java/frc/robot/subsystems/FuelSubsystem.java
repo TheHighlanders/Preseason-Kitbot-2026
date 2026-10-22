@@ -18,6 +18,10 @@ public class FuelSubsystem extends SubsystemBase {
   // declare variables
   private final SparkMax intakeLauncherRoller;
   private final SparkMax feederRoller;
+  private final SparkClosedLoopController shooterController;
+  private final SparkClosedLoopController feederController;
+
+
 
 
   /** Creates the fuel subsystem */
@@ -30,7 +34,18 @@ public class FuelSubsystem extends SubsystemBase {
     // the config to the controller
     SparkMaxConfig feederConfig = new SparkMaxConfig();
     feederConfig.smartCurrentLimit(FEEDER_MOTOR_CURRENT_LIMIT);
+    
+
+    feederConfig.closedLoop
+      .p (kP)
+      .i (kI)
+      .D (kD)
+    feederConfig.closedLoop.feedForward 
+      .kS (0.05)
+      .kV (kV);
+
     feederRoller.configure(feederConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
 
     // create the configuration for the launcher roller, set a current limit, set
     // the motor to inverted so that positive values are used for both intaking and
@@ -38,7 +53,19 @@ public class FuelSubsystem extends SubsystemBase {
     SparkMaxConfig launcherConfig = new SparkMaxConfig();
     launcherConfig.inverted(true);
     launcherConfig.smartCurrentLimit(LAUNCHER_MOTOR_CURRENT_LIMIT);
+    
+    launcherConfig.closedLoop
+      .p (kP)
+      .i (kI)
+      .D (kD)
+    launcherConfig.closedLoop.feedForward 
+      .kS (0.05)
+      .kV (kV);
+
     intakeLauncherRoller.configure(launcherConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    shooterController = intakeLauncherRoller.getClosedLoopController();
+    feederController = feederController.getClosedLoopController();
 
     // put default values for various fuel operations onto the dashboard
     // all commands using this subsystem pull values from the dashbaord to allow
