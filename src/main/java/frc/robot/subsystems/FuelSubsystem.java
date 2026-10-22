@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.PersistMode;
@@ -12,9 +13,17 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import static edu.wpi.first.units.Units.Kilo;
 import static frc.robot.Constants.FuelConstants.*;
+import static frc.robot.Constants.PIDConstants.*;
+
 
 public class FuelSubsystem extends SubsystemBase {
+  
+private final SparkClosedLoopController shooterController;
+private final SparkClosedLoopController feederController;
+
   // declare variables
   private final SparkMax intakeLauncherRoller;
   private final SparkMax feederRoller;
@@ -29,8 +38,24 @@ public class FuelSubsystem extends SubsystemBase {
     // create the configuration for the feeder roller, set a current limit and apply
     // the config to the controller
     SparkMaxConfig feederConfig = new SparkMaxConfig();
+    
     feederConfig.smartCurrentLimit(FEEDER_MOTOR_CURRENT_LIMIT);
+    feederConfig.closedLoop
+    .p(kP)
+    .i(kI)
+    .d(kD)
+    .outputRange(-1, 1);
+
+    feederConfig.closedLoop.feedForward
+    .kS(0.05)
+    .kV(5);
+    shooterController = intakeLauncherRoller.getClosedLoopController();
+    feederController = feederRoller.getClosedLoopController();
+
+
     feederRoller.configure(feederConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    
+
 
     // create the configuration for the launcher roller, set a current limit, set
     // the motor to inverted so that positive values are used for both intaking and
@@ -53,12 +78,13 @@ public class FuelSubsystem extends SubsystemBase {
 
   // A method to set the voltage of the intake roller
   public void setIntakeLauncherRoller(double voltage) {
-    intakeLauncherRoller.setVoltage(voltage);
+    shooterController.setSetpoint(voltage, SparkMax.ControlType.kVelocity);
+
   }
 
   // A method to set the voltage of the intake roller
   public void setFeederRoller(double voltage) {
-    feederRoller.setVoltage(voltage);
+    feederController.setSetpoint(voltage, SparkMax.ControlType.kVelocity);
   }
 
   // A method to stop the rollers
@@ -70,5 +96,6 @@ public class FuelSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
   }
 }
